@@ -17,8 +17,8 @@ resource "aws_instance" "hello_world" {
                 sudo dnf update -y
                 sudo dnf install -y nginx
                 echo "Hello World!" | sudo tee /usr/share/nginx/html/index.html
-                systemctl start nginx
-                systemctl enable nginx
+                sudo systemctl start nginx
+                sudo systemctl enable nginx
                 EOF
 } 
 
