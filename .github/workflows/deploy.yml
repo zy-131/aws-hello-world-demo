@@ -68,7 +68,7 @@ jobs:
             --ssh-public-key file://helloWorld_key.pub
 
           # Connect and Download Dependencies
-          ssh -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i helloWorld_key ec2-user@ec2-54-219-252-188.us-west-1.compute.amazonaws.com << 'EOF'
+          ssh -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i helloWorld_key ec2-user@ec2-54-177-180-82.us-west-1.compute.amazonaws.com << 'EOF'
           sudo dnf update -y
           echo "Hello World V2.0!" | sudo tee /usr/share/nginx/html/index.html
           sudo systemctl restart nginx
