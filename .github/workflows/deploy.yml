@@ -54,6 +54,12 @@ jobs:
             echo "Creating new security group"
           fi
       
+      - name: Load Payload
+        run: |
+          aws ec2-instance-connect ssh --instance-id i-0ab30141ad6805ff1
+          sudo dnf install -y mysql
+          # mysql copy /usr/data/payload.sql
+
       - name: Terraform Plan
         id: plan
         run: terraform plan

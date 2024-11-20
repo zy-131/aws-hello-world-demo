@@ -5,10 +5,10 @@ provider "aws" {
 # EC2 Instance Configuration
 resource "aws_instance" "hello_world" {
     ami = "ami-02a7ad1c45194c72f" # Amazon Linux 2023 AMI
-    instance_type = "t2.micro"
+    instance_type = "t2.nano"
 
     tags = {
-        Name = "HelloWorldInstance"
+        Name = "HelloWorldInstanceV2"
     }
 
     security_groups = [aws_security_group.web_access.name]
@@ -17,12 +17,14 @@ resource "aws_instance" "hello_world" {
     user_data = <<-EOF
                 #!/bin/bash
                 sudo dnf update -y
-                sudo dnf install -y nginx
+                sudo dnf install -y nginx                
                 echo "Hello World!" | sudo tee /usr/share/nginx/html/index.html
                 sudo systemctl start nginx
                 sudo systemctl enable nginx
                 EOF
 } 
+
+
 
 # Security Group Configuration
 resource "aws_security_group" "web_access" {
