@@ -35,7 +35,7 @@ jobs:
       # If exists, add to Terraform State
       - name: Import EC2 Instance (if exists)
         run: |
-          INSTANCE_ID="i-0f8bada45cf01c35c"
+          INSTANCE_ID="i-0f9bada45cf01c35c"
           if aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[0].Instances[0].InstanceId" --output text; then
             echo "EC2 instance already exists. Importing into Terraform State"
             terraform import aws_instance.hello_world $INSTANCE_ID
