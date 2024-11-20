@@ -30,6 +30,29 @@ jobs:
       
       - name: Terraform Validate
         run: terraform validate
+
+      # Check if EC2 instance already exists
+      # If exists, add to Terraform State
+      - name: Import EC2 Instance (if exists)
+        run: |
+          INSTANCE_ID="i-0f8bada45cf01c35c"
+          if aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[0].Instances[0].InstanceId" --output text; then
+            echo "EC2 instance already exists. Importing into Terraform State"
+            terraform import aws_instance.hello_world $INSTANCE_ID
+          else
+            echo "Creating new EC2 instance"
+          fi
+
+      # Check if Security Group already exists
+      # If exists, add to Terraform State
+      - name: Terraform Import Security Group (if exists)
+        run: |
+          if aws ec2 describe-security-groups --group-names "web_access" --query "SecurityGroups[0].GroupId" --output text; then
+            echo "Security group already exists. Importing into Terraform State"
+            terraform import aws_security_group.web_access $(aws ec2 describe-security-groups --group-names "web_access" --query "SecurityGroups[0].GroupId" --output text)
+          else
+            echo "Creating new security group"
+          fi
       
       - name: Terraform Plan
         id: plan
@@ -38,6 +61,7 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
       
+      # Debug Info if necessary
       - name: Terraform State
         run: terraform show
 
