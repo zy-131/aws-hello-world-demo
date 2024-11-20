@@ -5,7 +5,7 @@ provider "aws" {
 # EC2 Instance Configuration
 resource "aws_instance" "hello_world" {
     ami = "ami-02a7ad1c45194c72f" # Amazon Linux 2023 AMI
-    instance_type = "t2.nano"
+    instance_type = "t2.micro"
 
     tags = {
         Name = "HelloWorldInstanceV2"
