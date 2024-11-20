@@ -57,18 +57,16 @@ jobs:
       - name: Load Payload
         run: |
           ssh-keygen -t rsa -f helloWorld_key
+          chmod 400 helloWorld_key
           aws ec2-instance-connect send-ssh-public-key \
             --region us-west-1 \
             --instance-id i-0ab30141ad6805ff1 \
             --instance-os-user ec2-user \
             --ssh-public-key file://helloWorld_key.pub
-          ssh -o "IdentitiesOnly=yes" -i helloWorld_key ec2-user@ec2-54-219-252-188.us-west-1.compute.amazonaws.com
+          ssh -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i helloWorld_key ec2-user@ec2-54-219-252-188.us-west-1.compute.amazonaws.com << EOF
           sudo dnf install -y mysql
-
-          # aws ec2-instance-connect ssh --instance-id i-0ab30141ad6805ff1
-          # sudo dnf install -y mysql
-          # mysql copy /usr/data/payload.sql
-
+          EOF
+          
       - name: Terraform Plan
         id: plan
         run: terraform plan
