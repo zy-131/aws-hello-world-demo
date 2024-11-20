@@ -31,7 +31,9 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
-      - name: Import EC2 Instance (if it exists)
+      # Check if EC2 instance already exists
+      # If exists, add to Terraform State
+      - name: Import EC2 Instance (if exists)
         run: |
           INSTANCE_ID="i-0f8bada45cf01c35c"
           if aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[0].Instances[0].InstanceId" --output text; then
@@ -41,6 +43,8 @@ jobs:
             echo "Creating new EC2 instance"
           fi
 
+      # Check if Security Group already exists
+      # If exists, add to Terraform State
       - name: Terraform Import Security Group (if exists)
         run: |
           if aws ec2 describe-security-groups --group-names "web_access" --query "SecurityGroups[0].GroupId" --output text; then
@@ -57,6 +61,7 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
       
+      # Debug Info if necessary
       - name: Terraform State
         run: terraform show
 

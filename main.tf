@@ -2,6 +2,7 @@ provider "aws" {
     region = "us-west-1"
 }
 
+# EC2 Instance Configuration
 resource "aws_instance" "hello_world" {
     ami = "ami-02a7ad1c45194c72f" # Amazon Linux 2023 AMI
     instance_type = "t2.micro"
@@ -12,6 +13,7 @@ resource "aws_instance" "hello_world" {
 
     security_groups = [aws_security_group.web_access.name]
 
+    # Bash Script to download NGINX and display Hello World message
     user_data = <<-EOF
                 #!/bin/bash
                 sudo dnf update -y
@@ -22,6 +24,7 @@ resource "aws_instance" "hello_world" {
                 EOF
 } 
 
+# Security Group Configuration
 resource "aws_security_group" "web_access" {
     name = "web_access"
     description = "Allow HTTP and SSH access"
@@ -48,6 +51,7 @@ resource "aws_security_group" "web_access" {
     }
 }
 
+# Debug Values
 output "instance_id" {
   value = aws_instance.hello_world.id
   description = "Hello World EC2 Instance ID"
