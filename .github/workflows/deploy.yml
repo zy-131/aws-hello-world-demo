@@ -70,11 +70,13 @@ jobs:
           # Connect and Download Dependencies
           ssh -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i helloWorld_key ec2-user@ec2-54-219-252-188.us-west-1.compute.amazonaws.com << 'EOF'
           sudo dnf update -y
-          sudo amazon-linux-extras enable epel
-          sudo dnf install -y compat-openssl11
-          sudo wget https://dev.mysql.com/get/mysql80-community-release-el8-1.noarch.rpm
-          sudo rpm -Uvh mysql80-community-release-el8-1.noarch.rpm
-          sudo dnf install -y mysql-community-server
+          echo "Hello World V2.0!" | sudo tee /usr/share/nginx/html/index.html
+          sudo systemctl restart nginx
+          # sudo amazon-linux-extras enable epel
+          # sudo dnf install -y compat-openssl11
+          # sudo wget https://dev.mysql.com/get/mysql80-community-release-el8-1.noarch.rpm
+          # sudo rpm -Uvh mysql80-community-release-el8-1.noarch.rpm
+          # sudo dnf install -y mysql-community-server
           EOF
 
           # Key Cleanup
