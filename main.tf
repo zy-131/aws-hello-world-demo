@@ -24,8 +24,6 @@ resource "aws_instance" "hello_world" {
                 EOF
 } 
 
-
-
 # Security Group Configuration
 resource "aws_security_group" "web_access" {
     name = "web_access"
