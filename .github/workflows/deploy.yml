@@ -54,19 +54,28 @@ jobs:
             echo "Creating new security group"
           fi
       
-      - name: Load Payload
+      - name: EC2 Connection
         run: |
-          ssh-keygen -t rsa -f helloWorld_key
+          # Generate Key
+          ssh-keygen -t rsa -f helloWorld_key -q -N ""
           chmod 400 helloWorld_key
+
+          # Push Key to EC2 instance
           aws ec2-instance-connect send-ssh-public-key \
             --region us-west-1 \
             --instance-id i-0ab30141ad6805ff1 \
             --instance-os-user ec2-user \
             --ssh-public-key file://helloWorld_key.pub
-          ssh -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i helloWorld_key ec2-user@ec2-54-219-252-188.us-west-1.compute.amazonaws.com << EOF
+
+          # Connect and Download Dependencies
+          ssh -o "StrictHostKeyChecking=no" -o "IdentitiesOnly=yes" -i helloWorld_key ec2-user@ec2-54-219-252-188.us-west-1.compute.amazonaws.com << 'EOF'
+          sudo dnf update -y
           sudo dnf install -y mysql
           EOF
-          
+
+          # Key Cleanup
+          rm -f helloWorld_key helloWorld_key.pub
+
       - name: Terraform Plan
         id: plan
         run: terraform plan
