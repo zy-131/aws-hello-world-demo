@@ -14,9 +14,9 @@ resource "aws_instance" "hello_world" {
 
     user_data = <<-EOF
                 #!/bin/bash
-                dnf update -y
-                dnf install -y nginx
-                echo "Hello World!" < /usr/share/nginx/html/index.html
+                sudo dnf update -y
+                sudo dnf install -y nginx
+                echo "Hello World!" | sudo tee /usr/share/nginx/html/index.html
                 systemctl start nginx
                 systemctl enable nginx
                 EOF
